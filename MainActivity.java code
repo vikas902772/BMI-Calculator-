@@ -1,0 +1,62 @@
+package com.example.bmicalculator;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText heightInput, weightInput;
+    private Button calculateButton;
+    private TextView resultText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        heightInput = findViewById(R.id.heightInput);
+        weightInput = findViewById(R.id.weightInput);
+        calculateButton = findViewById(R.id.calculateButton);
+        resultText = findViewById(R.id.resultText);
+
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateBMI();
+            }
+        });
+    }
+
+    private void calculateBMI() {
+        String heightStr = heightInput.getText().toString();
+        String weightStr = weightInput.getText().toString();
+
+        if (!heightStr.isEmpty() && !weightStr.isEmpty()) {
+            float height = Float.parseFloat(heightStr);
+            float weight = Float.parseFloat(weightStr);
+            float bmi = weight / (height * height);
+            displayBMI(bmi);
+        }
+    }
+
+    private void displayBMI(float bmi) {
+        String bmiLabel = "";
+
+        if (bmi < 18.5) {
+            bmiLabel = "Underweight";
+        } else if (bmi >= 18.5 && bmi <= 24.9) {
+            bmiLabel = "Normal weight";
+        } else if (bmi >= 25 && bmi <= 29.9) {
+            bmiLabel = "Overweight";
+        } else {
+            bmiLabel = "Obese";
+        }
+
+        String resultTextString = "BMI: " + bmi + "\n" + bmiLabel;
+        resultText.setText(resultTextString);
+    }
+}
